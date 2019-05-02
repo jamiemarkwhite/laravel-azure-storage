@@ -21,9 +21,11 @@ class AzureStorageServiceProvider extends ServiceProvider
     {
         Storage::extend('azure', function ($app, $config) {
             $endpoint = sprintf(
-                'DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s',
+                'DefaultEndpointsProtocol=%s;AccountName=%s;AccountKey=%s;%s',
+                $config['default_endpoitns_protocol'],
                 $config['name'],
-                $config['key']
+                $config['key'],
+                $config['endpoints']
             );
             $client = BlobRestProxy::createBlobService($endpoint);
             $adapter = new AzureBlobStorageAdapter($client, $config['container']);
